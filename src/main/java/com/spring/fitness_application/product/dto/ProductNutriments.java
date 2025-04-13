@@ -1,6 +1,10 @@
-package com.spring.fitness_application.product;
+package com.spring.fitness_application.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import java.math.BigDecimal;
 
@@ -10,6 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductNutriments{
+
         @JsonProperty("energy-kcal_100g") BigDecimal calories;
         @JsonProperty("proteins_100g") BigDecimal protein;
         @JsonProperty("carbohydrates_100g") BigDecimal carbohydrates;

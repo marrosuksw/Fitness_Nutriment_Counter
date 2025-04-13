@@ -2,14 +2,18 @@ package com.spring.fitness_application.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @Entity
 @Getter
 @Setter
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id", unique = true, updatable = false, nullable = false)
     private long id;
@@ -18,6 +22,10 @@ public class User {
     @Column(name="password", nullable = false)
     private String password;
 
-    public User() {}
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
 
 }

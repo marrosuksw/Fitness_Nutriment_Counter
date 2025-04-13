@@ -1,9 +1,10 @@
-package com.spring.fitness_application.product;
+package com.spring.fitness_application.product.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import java.util.List;
 
@@ -14,8 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Product {
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+
     @JsonProperty("product_name")
     private String product_name;
     @JsonProperty("brands")
@@ -23,4 +23,7 @@ public class Product {
     @JsonProperty("nutriments")
     ProductNutriments productNutriments;
 
+    public String brandListToString(){
+        return brands.toString();
+    }
 }

@@ -11,5 +11,4 @@ public class DashboardController {
     public String dashboardTest(){
         return ("This will be the main dashboard");
     }
-
 }
