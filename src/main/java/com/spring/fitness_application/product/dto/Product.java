@@ -24,6 +24,10 @@ public class Product {
     ProductNutriments productNutriments;
 
     public String brandListToString(){
-        return brands.toString();
+        StringBuilder brandList = new StringBuilder();
+        for(String brand: brands){
+            brandList.append(brand).append(",");
+        }
+        return brandList.toString();
     }
 }
