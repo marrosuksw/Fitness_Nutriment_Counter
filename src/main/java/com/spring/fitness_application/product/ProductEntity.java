@@ -1,6 +1,7 @@
 package com.spring.fitness_application.product;
 
 
+import com.spring.fitness_application.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id", nullable = false)
     private Long id;
     @Column(name="name", nullable = false)
@@ -34,10 +35,13 @@ public class ProductEntity {
     private BigDecimal sugar;
     @Column(name="saturated_fat", nullable = false)
     private BigDecimal saturatedFat;
+    @ManyToOne
+    @JoinColumn(name="user_id", nullable = false)
+    private User user;
 
     public ProductEntity(String name, String brands, BigDecimal calories,
                          BigDecimal protein, BigDecimal carbohydrates, BigDecimal fat,
-                         BigDecimal sugar, BigDecimal saturatedFat){
+                         BigDecimal sugar, BigDecimal saturatedFat, User user) {
         this.name = name;
         this.brands = brands;
         this.calories = calories;
@@ -46,8 +50,9 @@ public class ProductEntity {
         this.fat = fat;
         this.sugar = sugar;
         this.saturatedFat = saturatedFat;
+        this.user = user;
     }
-    public ProductEntity(String name, String brands){
+    public ProductEntity(String name, String brands, User user){
         this.name = name;
         this.brands = brands;
         this.calories = BigDecimal.ZERO;
@@ -56,6 +61,7 @@ public class ProductEntity {
         this.fat = BigDecimal.ZERO;
         this.sugar = BigDecimal.ZERO;
         this.saturatedFat = BigDecimal.ZERO;
+        this.user = user;
     }
 
 }

@@ -18,8 +18,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<ProductEntity> findAllProducts() {
-        return productRepository.findAll();
+    public List<ProductEntity> findAllProducts(Long userId) {
+        return productRepository.findByUserId(userId);
     }
     public ProductEntity saveProduct(ProductEntity productEntity) {
         return productRepository.save(productEntity);
