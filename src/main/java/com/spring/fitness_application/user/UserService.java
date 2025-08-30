@@ -2,6 +2,8 @@ package com.spring.fitness_application.user;
 
 import com.spring.fitness_application.user.dto.LoginRequest;
 import com.spring.fitness_application.user.dto.RegisterRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,9 +42,6 @@ public class UserService {
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
-    public void delete(User user) {
-        userRepository.delete(user);
-    }
     public Optional<User> verifyUser(LoginRequest response){
         Optional<User> user = userRepository.findByUsername(response.username());
         String hashedPassword = user.get().getPassword();
@@ -51,5 +50,21 @@ public class UserService {
             return user;
         }
         return Optional.empty();
+    }
+    public void logout(HttpServletResponse response) {
+        Cookie accessCookie = new Cookie("accessToken", null);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setSecure(true);
+        accessCookie.setPath("/");
+        accessCookie.setMaxAge(0);
+
+        Cookie refreshCookie = new Cookie("refreshToken", null);
+        refreshCookie.setHttpOnly(true);
+        refreshCookie.setSecure(true);
+        refreshCookie.setPath("/");
+        refreshCookie.setMaxAge(0);
+
+        response.addCookie(accessCookie);
+        response.addCookie(refreshCookie);
     }
 }

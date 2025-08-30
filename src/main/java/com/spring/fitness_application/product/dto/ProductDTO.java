@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
+//change to Record
 public class ProductDTO {
     private Long id;
     private String name;
@@ -19,5 +21,6 @@ public class ProductDTO {
     private BigDecimal fat;
     private BigDecimal sugar;
     private BigDecimal saturatedFat;
+    private LocalDate createdAt;
 
 }

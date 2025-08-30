@@ -53,11 +53,11 @@ public class JwtServiceTest {
         //Given
         JwtService jwtService = new JwtService();
         String shortLivedSecret = Base64.getEncoder().encodeToString("01234567890123456789012345678901".getBytes());
-        ReflectionTestUtils.setField(jwtService, "jwtSecret", shortLivedSecret);
-        ReflectionTestUtils.setField(jwtService, "jwtExpiration", 1000L);
+        jwtService.setJwtSecret(shortLivedSecret);
+        jwtService.setJwtExpiration(1000L * 3);
         String token = jwtService.generateAccessToken(1L);
 
-        Thread.sleep(2000);
+        Thread.sleep(4000);
         //When
         boolean expired = jwtService.validateToken(token);
 

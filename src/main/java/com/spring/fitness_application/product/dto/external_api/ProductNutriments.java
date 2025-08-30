@@ -1,10 +1,6 @@
-package com.spring.fitness_application.product.dto;
+package com.spring.fitness_application.product.dto.external_api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 import java.math.BigDecimal;
 

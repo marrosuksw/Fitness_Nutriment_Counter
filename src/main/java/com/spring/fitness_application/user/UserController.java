@@ -6,7 +6,6 @@ import com.spring.fitness_application.personal_data.PersonalDataService;
 import com.spring.fitness_application.user.dto.LoginRequest;
 import com.spring.fitness_application.user.dto.LoginResponse;
 import com.spring.fitness_application.user.dto.RegisterRequest;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +17,6 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-
     private final UserService userService;
     private final JwtService jwtService;
     private final PersonalDataService personalDataService;
@@ -33,11 +31,10 @@ public class UserController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
         try {
             if(!userService.validateCredentials(registerRequest)) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
             User user = new User(registerRequest.username(), registerRequest.password());
             userService.create(user);
-            System.out.println("Before personal data save");
             personalDataService.save(new PersonalData(
                     registerRequest.personalDataDTO().height(),
                     registerRequest.personalDataDTO().weight(),
@@ -46,7 +43,6 @@ public class UserController {
                     registerRequest.personalDataDTO().gender(),
                     user
             ));
-            System.out.println("After personal data save");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         catch (RuntimeException e) {
@@ -70,21 +66,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
-        Cookie accessCookie = new Cookie("accessToken", null);
-        accessCookie.setHttpOnly(true);
-        accessCookie.setSecure(true);
-        accessCookie.setPath("/");
-        accessCookie.setMaxAge(0);
-
-        Cookie refreshCookie = new Cookie("refreshToken", null);
-        refreshCookie.setHttpOnly(true);
-        refreshCookie.setSecure(true);
-        refreshCookie.setPath("/");
-        refreshCookie.setMaxAge(0);
-
-        response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
-
+        userService.logout(response);
         return ResponseEntity.ok().build();
     }
     @GetMapping("/me")

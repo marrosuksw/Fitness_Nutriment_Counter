@@ -11,5 +11,4 @@ public interface PersonalDataRepository
         extends JpaRepository<PersonalData, Long> {
     Optional<PersonalData> findById(Long id);
     Optional<PersonalData> findByUser(User user);
-
 }

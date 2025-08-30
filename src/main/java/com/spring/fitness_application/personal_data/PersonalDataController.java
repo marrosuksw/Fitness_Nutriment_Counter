@@ -39,10 +39,13 @@ public class PersonalDataController {
         }
         Long id = jwtService.extractId(token);
         User user = userService.findById(id);
-        if(user == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if(user == null)
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         Optional<PersonalData> personalData = personalDataService.findByUser(user);
-        if(personalData.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(personalData.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         PersonalDataDTO personalDataDTO = personalDataService.convertEntityToDTO(personalData);
+
         return new ResponseEntity<>(personalDataDTO, HttpStatus.OK);
     }
     @PutMapping("/update")
@@ -54,9 +57,13 @@ public class PersonalDataController {
         }
         Long id = jwtService.extractId(token);
         User user = userService.findById(id);
-        if(id == null) return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        if(personalDataDto == null) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        personalDataService.save(personalDataService.convertDTOToEntity(personalDataDto, user));
+        if(id == null)
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if(personalDataDto == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        boolean updateVerification = personalDataService.update(personalDataDto, user);
+        if(!updateVerification)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

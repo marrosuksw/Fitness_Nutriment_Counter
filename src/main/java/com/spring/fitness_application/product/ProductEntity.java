@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -35,13 +36,15 @@ public class ProductEntity {
     private BigDecimal sugar;
     @Column(name="saturated_fat", nullable = false)
     private BigDecimal saturatedFat;
+    @Column(name="created_at", nullable = false)
+    private LocalDate created;
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;
 
     public ProductEntity(String name, String brands, BigDecimal calories,
                          BigDecimal protein, BigDecimal carbohydrates, BigDecimal fat,
-                         BigDecimal sugar, BigDecimal saturatedFat, User user) {
+                         BigDecimal sugar, BigDecimal saturatedFat, User user, LocalDate created) {
         this.name = name;
         this.brands = brands;
         this.calories = calories;
@@ -51,8 +54,9 @@ public class ProductEntity {
         this.sugar = sugar;
         this.saturatedFat = saturatedFat;
         this.user = user;
+        this.created = created;
     }
-    public ProductEntity(String name, String brands, User user){
+    public ProductEntity(String name, String brands, User user, LocalDate created) {
         this.name = name;
         this.brands = brands;
         this.calories = BigDecimal.ZERO;
@@ -62,6 +66,7 @@ public class ProductEntity {
         this.sugar = BigDecimal.ZERO;
         this.saturatedFat = BigDecimal.ZERO;
         this.user = user;
+        this.created = created;
     }
 
 }

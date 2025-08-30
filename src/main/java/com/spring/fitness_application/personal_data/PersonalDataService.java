@@ -4,6 +4,7 @@ package com.spring.fitness_application.personal_data;
 import com.spring.fitness_application.personal_data.dto.PersonalDataDTO;
 import com.spring.fitness_application.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -19,10 +20,6 @@ public class PersonalDataService {
     public PersonalDataService(PersonalDataRepository personalDataRepository) {
         this.personalDataRepository = personalDataRepository;
     }
-    //TODO BMI calc
-    public BigDecimal calculateBmi(){
-        return new BigDecimal(BigInteger.valueOf(0));
-    }
 
     public void save(PersonalData personalData) {
         if(personalData == null ){
@@ -30,11 +27,36 @@ public class PersonalDataService {
         }
         personalDataRepository.save(personalData);
     }
-    public void delete(PersonalData personalData) {
-        personalDataRepository.delete(personalData);
+    public boolean verifyPersonalData(PersonalDataDTO personalDataDTO) {
+        return !(personalDataDTO == null || personalDataDTO.height() == null
+                || personalDataDTO.height().intValue() < 0
+                || personalDataDTO.height().intValue() > 250 || personalDataDTO.weight() == null
+                || personalDataDTO.weight().intValue() < 0
+                || personalDataDTO.weight().intValue() > 250 || personalDataDTO.age() == null
+                || personalDataDTO.age() < 15
+                || personalDataDTO.age() > 100 || personalDataDTO.gender().toString().isEmpty()
+                || personalDataDTO.physicalActivity().toString().isEmpty());
     }
-    public Optional<PersonalData> findById(Long id) {
-        return personalDataRepository.findById(id);
+    public boolean update(PersonalDataDTO personalDataDto, User user) {
+        if(personalDataDto == null ){
+            throw new IllegalArgumentException("personalData is null");
+        }
+        if(!verifyPersonalData(personalDataDto)) return false;
+        Optional<PersonalData> existing = personalDataRepository.findByUser(user);
+        PersonalData data;
+        if(existing.isPresent()){
+            data = existing.get();
+            data.setHeight(personalDataDto.height());
+            data.setWeight(personalDataDto.weight());
+            data.setAge(personalDataDto.age());
+            data.setGender(personalDataDto.gender());
+            data.setPhysicalActivity(personalDataDto.physicalActivity());
+        }
+        else {
+            throw new IllegalArgumentException("personalData not found");
+        }
+        personalDataRepository.save(data);
+        return true;
     }
     public Optional<PersonalData> findByUser(User user) {
         return personalDataRepository.findByUser(user);
@@ -50,16 +72,5 @@ public class PersonalDataService {
 
         );
         return dto;
-    }
-    public PersonalData convertDTOToEntity(PersonalDataDTO dto, User user) {
-        if(dto == null) return null;
-        return new PersonalData(
-                dto.height(),
-                dto.weight(),
-                dto.age(),
-                dto.physicalActivity(),
-                dto.gender(),
-                user
-        );
     }
 }

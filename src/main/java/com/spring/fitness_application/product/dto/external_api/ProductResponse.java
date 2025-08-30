@@ -1,4 +1,4 @@
-package com.spring.fitness_application.product.dto;
+package com.spring.fitness_application.product.dto.external_api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
