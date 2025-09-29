@@ -1,5 +1,6 @@
 # Fitness Nutriment Counter 
 ### Backend REST API for the FNC application made with Spring Boot
+(JavaScript + React.js frontend available here: https://github.com/marrosuksw/Fitness_Nutriment_Counter_Frontend)
 
 #### Main technologies and libraries used:
 - **Hibernate** ORM for entity mapping
